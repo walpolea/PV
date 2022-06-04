@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PV Example</title>
+
+  <style>
+    body > div {
+      margin:20px;
+      padding:20px;
+      background-color:lightblue;
+    }
+
+    h2 {
+      margin-top:0;
+    }
+
+    p {
+      margin-bottom:.5rem;
+    }
+
+    pre {
+      font-size:1.4rem;
+    }
+  </style>
+</head>
+<body>
+  
+  <h1>Petite Vue Global Store</h1>
+  <div v-scope="sender(globalStore)">
+    <h2>This is an island (v-scope)</h2>
+    <input type="text" @input="setMessage( $event.target.value )" placeholder="message">
+    <button @click="toggle">toggle checkbox</button>
+  </div>
+
+  <div v-scope="reader(globalStore)">
+    <h2>This is another island (different v-scope)</h2>
+    <p>{{store.message}}</p>
+    <p>{{bigMessage}}</p>
+    <input type="checkbox" v-model="store.toggle">
+  </div>
+
+  <div v-scope="counter(globalStore)"></div>
+  <div v-scope="counter(globalStore)"></div>
+
+  <div v-scope="{ globalStore }">
+    <h2>And yet another with just global store:</h2>
+    <pre>{{globalStore}}</pre>
+  </div>
+
+  <script type="module">
+
+  import PV from './lib/main.js';
+
+  const sender = (store) => {
+    return {
+      toggle() {
+        store.toggle = !store.toggle;
+      },
+      setMessage(msg) {
+        store.message = msg;
+      },
+    }
+  }
+
+  const reader = (store) => {
+    return {
+      store,
+      get bigMessage() {
+        return store.message.toUpperCase()
+      },
+    }
+  }
+
+  const counter = (store) => {
+    
+    store.count = store.count ?? 0;
+    
+    return {
+      localCount:0,
+      get count() {
+        return store.count
+      },
+      inc() {
+        this.localCount++;
+        store.count++;
+      },
+      $template: `
+      <div>
+        <h2>Counter:</h2>
+        <p>Local Count: {{localCount}}</p>
+        <p>Global Count: {{count}}</p>
+
+        <button @click="inc">increment</button>
+      </div>`
+    }
+  }
+
+  PV.registerScope( "sender", sender );
+  PV.registerScope( "reader", reader );
+  PV.registerScope( "counter", counter );
+
+  //you can initialize the global store if you like
+  //but you don't have to, you can also add props as needed from scopes
+  PV.initializeStore( {
+    toggle:false,
+    message:"initial message"
+  });
+
+  const app = PV.mount();
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "name": "pv",
+  "files":["dist"],
+  "main":"./dist/pv.umd.js",
+  "module":"./dist/pv.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/pv.es.js",
+      "require": "./dist/pv.umd.js"
+    }
+  },
+  "version": "0.1.0",
+  "description": "A petite-vue wrapper",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build", 
+    "preview": "vite preview"
+  },
+  "keywords": ["petite-vue"],
+  "author": "Andrew Walpole",
+  "license": "ISC",
+  "devDependencies": {
+    "vite": "^2.9.9",
+    "petite-vue": "^0.4.1"
+  }
+}
