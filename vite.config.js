@@ -7,13 +7,6 @@ module.exports = defineConfig({
       entry: path.resolve(__dirname, 'lib/main.js'),
       name: 'PV',
       fileName: (format) => `pv.${format}.js`
-    },
-    rollupOptions: {
-      output: {
-        globals: {
-          'petite-vue': 'petite-vue'
-        }
-      }
     }
   }
-})
+});

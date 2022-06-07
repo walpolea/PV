@@ -772,4 +772,4 @@ __publicField(PV, "scopes", {
   globalStore: _PV.store
 });
 __publicField(PV, "directives", []);
-export { PV as default };
+export { PV };
